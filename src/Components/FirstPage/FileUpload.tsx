@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const FileUpload: React.FC = (): JSX.Element => {
     return (
         <>
-            <div className="fixed bottom-1 right-1 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+            <div className="fixed bottom-1 right-7 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
                 <div className="bg-[#e5e7eb] p-3 rounded w-[20rem] flex justify-between">
                     <p>Uploading File</p>
                     <div className="flex md:space-x-5 items-center">
