@@ -1,11 +1,15 @@
 "use client"
 
+import { error, success } from "@/Toast/toast";
+import check from "@/Utils/CheckFile";
+import deleteFile from "@/Utils/DeleteData";
 import getData from "@/Utils/GetData";
 import { faFileImage, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react"
+import { ToastContainer } from "react-toastify";
 
-const Table:React.FC = ():JSX.Element => {
+const Table: React.FC = (): JSX.Element => {
 
     const [TableContent, setTableContent] = useState([])
 
@@ -23,19 +27,32 @@ const Table:React.FC = ():JSX.Element => {
         fetchTableContent()
     }, [])
 
-    const check = (vari: string) => {
+    const onClickDelete = async (name: string) => {
+        const res = await deleteFile(name);
 
-        const extension: string = vari.split('.')[1];
+        if (res.status === 204) {
 
-        if (extension === "jpg" || extension === "png" || extension === "jpeg")
-            return 1
-        else
-            return 2
+            let dummy_array = TableContent.filter((element) => {
+                return element.name !== name
+            });
+
+            setTableContent(dummy_array)
+
+            success('File Deleted successfully !!')
+        }
+        else{
+            error('Some Error occured in deleting the file !!')
+        }
     }
+
 
 
     return (
         <div className="p-8">
+            <ToastContainer
+                position="top-right"
+                autoClose={4000}
+            />
             <table className="shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -64,7 +81,7 @@ const Table:React.FC = ():JSX.Element => {
                                     {check(element.name) === 1 ? 'Image' : 'File'}
                                 </td>
                                 <td className="relative right-2 px-6 py-4">
-                                    <button type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Delete</button>
+                                    <button onClick={() => { onClickDelete(element.name) }} type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Delete</button>
                                 </td>
                             </tr>
                         )

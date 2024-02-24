@@ -1,39 +1,46 @@
 "use client";
 
-/***** React imports  ******/ 
+/***** React imports  ******/
 
 import { useState } from "react";
 
-/***** FontAwesome imports  ******/ 
+/***** FontAwesome imports  ******/
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 
-/***** Axios api imports  ******/ 
+/***** Axios api imports  ******/
 
 import fileFetch from "@/Utils/PostData";
 
-/***** Toastify imports  ***** */ 
+/***** Toastify imports  ***** */
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { success, error } from "@/Toast/toast";
+import { useDispatch } from "react-redux";
+import { itemsActions } from "@/Store/items-slice";
+import { openActions } from "@/Store/openModal-slice";
 
 
 const Upload: React.FC = (): JSX.Element => {
 
     const [file, setFiles] = useState<File[]>([])
 
+    const dispatch = useDispatch()
 
-    const handleChange = (event:any) => {
 
-        if(event.target.files){
-            const files:File[] = Array.from(event.target.files)
+    const handleChange = (event: any) => {
+
+        if (event.target.files) {
+            const files: File[] = Array.from(event.target.files)
             setFiles(files)
         }
     }
 
     const handleClick = async () => {
+
+        dispatch(openActions.openModal())
 
         if (file.length === 0)
             return;
@@ -43,12 +50,13 @@ const Upload: React.FC = (): JSX.Element => {
         let isCorrect: boolean = true;
 
         for (const element of file) {
-            let res = await fileFetch(url, element);
+            dispatch(itemsActions.addItems({ payload: element }))
+            let res = await fileFetch(url, element, dispatch);
             if (res && res.status !== 201)
                 isCorrect = false;
         }
-        if (isCorrect){
-            success('File Uploaded successfully !!');
+        if (isCorrect) {
+            success('Files Uploaded successfully !!');
             setFiles([])
         }
         else

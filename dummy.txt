@@ -1,0 +1,15 @@
+{/* <div className=" pb-7 flex flex-col rounded p-3 border-b-2">
+                    <div className="flex justify-between  gap-2 items-center">
+                        <div className="flex">
+                            <FontAwesomeIcon icon={faFileImage} size="xl" style={{ color: "#b30000", }} />
+                            <p className="ml-2">1.jpg</p>
+                        </div>
+                        <FontAwesomeIcon icon={faCircleCheck} size="xl" style={{ color: "#16a34a", }} />
+
+                    </div>
+                    <div className="relative top-3 w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+                        <div className="bg-green-600 h-2.5 rounded-full dark:bg-gray-300"
+                            style={{ width: `100%` }}></div>
+                        <p className="mt-1">75%</p>
+                    </div>
+                </div> */}
