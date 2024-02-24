@@ -18,6 +18,10 @@ interface root {
   children: React.ReactNode
 }
 
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+
 const RootLayout: React.FC<root> = ({ children }) => {
   return (
     <Provider store={store}>

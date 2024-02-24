@@ -47,7 +47,7 @@ const FileUpload: React.FC = (): JSX.Element => {
                             if(currItem && currItem.value===100)
                               counter++;
 
-                            return <div key={index} className="pb-7 flex flex-col rounded p-3 border-b-2">
+                            return <div key={index} className="pb-7 flex flex-col p-3 border-b-2">
                                 <div className="flex justify-between  gap-2 items-center">
                                     <div className="flex">
                                         {check(element.payload.name) === 1 ? <FontAwesomeIcon icon={faFileImage} size="xl" style={{ color: "#b30000", }} /> : <FontAwesomeIcon size="xl" icon={faFileLines} style={{ color: "#b90404", }} />}
