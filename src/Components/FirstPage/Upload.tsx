@@ -26,15 +26,17 @@ import { openActions } from "@/Store/openModal-slice";
 const Upload: React.FC = (): JSX.Element => {
 
     const [file, setFiles] = useState<File[]>([])
+    const [dragging, setDragging] = useState<boolean>(false);
 
     const dispatch = useDispatch()
-
 
     const handleChange = (event: any) => {
 
         if (event.target.files) {
             const files: File[] = Array.from(event.target.files)
-            setFiles(files)
+            setFiles((prev)=>{
+                return [...prev,...files]
+            })
         }
     }
 
@@ -57,11 +59,25 @@ const Upload: React.FC = (): JSX.Element => {
         }
         if (isCorrect) {
             success('Files Uploaded successfully !!');
+            setDragging(false);
             setFiles([])
         }
         else
             error('Some Error occured !!')
 
+    }
+
+    const Drop = (event:any) => {
+        event.preventDefault();
+        const fileArray = event.dataTransfer.files;
+        setFiles((prev)=>{
+            return [...prev,...fileArray]
+        })
+    }
+
+    const onDragOver = (event:any)=>{
+        setDragging(true)
+        event.preventDefault()
     }
 
     return (
@@ -70,9 +86,9 @@ const Upload: React.FC = (): JSX.Element => {
                 position="top-right"
                 autoClose={4000}
             />
-            <div className="flex flex-col">
+            <div onDrop={Drop} onDragLeave={() => setDragging(false)} onDragOver={onDragOver} className="flex flex-col">
                 <div className="flex items-center justify-center w-[50rem]">
-                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center p-8 w-full max-h-screen border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div className="grid grid-cols-4 gap-2">
                             {file.length > 0 && file.map((element, index) => {
                                 return (
@@ -87,7 +103,13 @@ const Upload: React.FC = (): JSX.Element => {
                             <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                             </svg>
-                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                {dragging ? <span className="font-semibold">Release here to Upload the file</span> :
+                                    <> 
+                                        <span className="font-semibold">Click to upload</span> or drag and drop
+                                    </>}
+                                
+                            </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
                         </div> : null}
                         <input onChange={handleChange} className="hidden" id="dropzone-file" type="file" multiple />
